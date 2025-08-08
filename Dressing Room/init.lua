@@ -1,5 +1,7 @@
 local core_mainmenu = require("core_mainmenu")
 
+local addonName = "Dressing Room"
+
 -- This seems to be the UI object. TObject for child UI at
 -- (*(uint32_t *)0xa4d848) + 0x50
 --local _DressingRoomControlObject = 0xA4D848
@@ -55,6 +57,15 @@ local function PresentProportions()
 end
 
 local function PresentDressingRoomInfo()
+    if CurrentScene() ~= 5 then
+        return
+    end
+
+    if GetDressingRoomObject() == 0 or GetDressingRoomCharData() == 0 then
+        -- Never gets here but sanity check
+        return
+    end
+
     PresentHair()
     PresentProportions()
 end
@@ -64,16 +75,7 @@ local function present()
         return
     end
     
-    if CurrentScene() ~= 5 then
-        return
-    end
-
-    if GetDressingRoomObject() == 0 then
-        -- Never gets here
-        return
-    end
-
-    if imgui.Begin("Dressing Room", nil, nil) then
+    if imgui.Begin(addonName, display, {}) then
         PresentDressingRoomInfo()
         imgui.End()
     end
@@ -85,11 +87,11 @@ local function init()
         display = not display
     end
 
-    core_mainmenu.add_button("Dressing Room", mainMenuButtonHandler)
+    core_mainmenu.add_button(addonName, mainMenuButtonHandler)
     
     return 
     {
-        name = 'Dressing Room',
+        name = addonName,
         version = '0.0.1',
         author = 'Ender',
         present = present,
