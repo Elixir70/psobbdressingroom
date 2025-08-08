@@ -50,7 +50,7 @@ local function PresentProportions()
     local width   = pso.read_f32(char + 0x48)
     local height  = pso.read_f32(char + 0x4c)
 
-    local s = string.format("Proportions: %.2f, %.2f", width, height)
+    local s = string.format("Proportions: %.4f, %.4f", width, height)
     imgui.Text(s)
 end
 
